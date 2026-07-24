@@ -1,8 +1,9 @@
-import { useState, useCallback, type ReactElement } from 'react'
-import Badge, { type BadgeVariant } from './Badge'
-import CopyableHash from './CopyableHash'
+import { useState, useCallback, useRef, memo, type ReactElement } from 'react'
 import './ActivityTimeline.css'
+import { ACTIVITY_ITEMS, ActivityItem, ActivityTone, SAMPLE_ACTIVITY } from '../data/activity'
 import EmptyState from './states/EmptyState'
+import CopyableHash from './CopyableHash'
+import Badge from './Badge'
 
 import { ACTIVITY_ITEMS, type ActivityItem } from '../data/activity'
 
@@ -32,44 +33,33 @@ export function isTxHash(meta: string): boolean {
 export type { ActivityItem }
 export { ACTIVITY_ITEMS }
 
+export function toneToBadgeVariant(tone: ActivityTone): 'active' | 'grace-period' | 'locked' {
+  switch (tone) {
+    case 'success':
+      return 'active'
+    case 'warning':
+      return 'grace-period'
+    case 'info':
+    default:
+      return 'locked'
+  }
+}
+
+export function isTxHash(meta: string): boolean {
+  return /^tx\s+0x[\w.-]+$/i.test(meta.trim())
+}
+
 export interface ActivityTimelineProps {
   compact?: boolean
   /** Timeline events to render. Defaults to sample data. Pass empty array for no data. */
   items?: ActivityItem[]
 }
 
-export const SAMPLE_ACTIVITY: ActivityItem[] = [
-  {
-    id: 'evt-001',
-    timestamp: 'Apr 28, 14:22 UTC',
-    title: 'Attestation submitted',
-    description: 'Identity evidence package uploaded and signed for review.',
-    actor: 'Validator Node 12',
-    statusLabel: 'Accepted',
-    tone: 'success',
-    meta: 'Tx 0x93a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1',
-  },
-  {
-    id: 'evt-002',
-    timestamp: 'Apr 27, 09:48 UTC',
-    title: 'Proof mismatch detected',
-    description: 'Signature payload differed from expected checksum for one field.',
-    actor: 'Automated Verifier',
-    statusLabel: 'Needs update',
-    tone: 'warning',
-    meta: 'Rule AV-17',
-  },
-  {
-    id: 'evt-003',
-    timestamp: 'Apr 26, 20:11 UTC',
-    title: 'Credential refreshed',
-    description: 'Expiration window extended after successful periodic check.',
-    actor: 'System process',
-    statusLabel: 'In review',
-    tone: 'info',
-    meta: 'Window +90d',
-  },
-]
+interface ActivityRowProps {
+  item: ActivityItem
+  isExpanded: boolean
+  onToggle: (id: string) => void
+}
 
 export default function ActivityTimeline({
   compact = false,
