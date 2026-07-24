@@ -26,6 +26,12 @@ export interface BadgeProps {
    * when this prop is omitted.
    */
   srPrefix?: string
+  /**
+   * Accessible label for the badge element. Defaults to the display label.
+   * Provide this prop when the badge appears in a context where screen readers
+   * need a more descriptive label than the visible text alone.
+   */
+  ariaLabel?: string
 }
 
 const DEFAULT_LABELS: Record<string, string> = {
