@@ -14,6 +14,7 @@ import {
   ONBOARDING_STEP_STORAGE_KEY,
 } from '../config/onboarding'
 import { useWallet } from '../context/WalletContext'
+import { useTranslation } from 'react-i18next'
 import { useSeo } from '../hooks/useSeo'
 import { formatUsdc } from '../lib/format'
 import { usePinnedWidgets } from '../hooks/usePinnedWidgets';

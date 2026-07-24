@@ -14,6 +14,7 @@ import Banner from './Banner'
 import LINKS from '../config/links'
 import { hasHandledInstallPrompt, markInstallPromptHandled } from '../config/installPrompt'
 import { isExternalUrl } from '../lib/isExternalUrl'
+import { useProductUpdates } from '../hooks/useProductUpdates'
 import './Layout.css'
 
 
