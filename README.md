@@ -90,6 +90,26 @@ The link variable intent and legal handoff notes are also tracked in `docs/foote
 - Vite
 - React Router
 
+## Settings auto-save _(closes #564)_
+
+The Settings page now debounces every field change into a single `PATCH /settings` round-trip and surfaces a small "Saved just now" pill on success. See [`docs/auto-save.md`](./docs/auto-save.md) for the API, accessibility, and token-driven styling notes.
+
+```tsx
+import { useDebouncedAutoSave } from '../hooks/useDebouncedAutoSave'
+import { AutoSaveIndicator } from '../components/indicators'
+import { apiFetch } from '../api/client'
+
+const autoSave = useDebouncedAutoSave({
+  value: draft,
+  save: (next, signal) =>
+    apiFetch<void>('/settings', { method: 'PATCH', body: next, signal }),
+  delayMs: 600,
+  isEqual: (a, b) => a.themeMode === b.themeMode && a.network === b.network /* … */,
+})
+```
+
+The existing manual Save button on Settings stays — it commits the draft to `localStorage` while the new auto-save flows `PATCH` to the backend. The two flows are intentionally independent.
+
 ## Dashboard widget refresh _(closes #561)_
 
 Dashboard pages render their data widgets through a shared in-app cache so the user can refresh a single card without disturbing the rest of the page. See [`docs/widget-cache.md`](./docs/widget-cache.md) for the API, accessibility, and token-driven styling notes.
@@ -131,45 +151,14 @@ See the [docs/](docs/) directory for detailed project documentation, including:
 - [API Client Policies](docs/API_CLIENT_POLICIES.md) — Interceptors, retry policy, and error taxonomy for the API client.
 - [Cookie-Secret Rotation Runbook](docs/COOKIE_SECRETS.md) — Rotation cadence, blast radius, and step-by-step procedure for backend session/CSRF cookie secrets.
 - [Hooks & Utilities Reference](docs/HOOKS.md) — Catalog of reusable hooks (`src/hooks/`) and helpers (`src/lib/`) with signatures and usage.
-  \=======
-
-## Data fetching helpers
-
-The frontend now includes a small infinite-query wrapper for cursor-based feeds in [src/hooks/useInfiniteQuery.ts](src/hooks/useInfiniteQuery.ts). It supports loading the first page automatically, appending later pages with `fetchNextPage()`, and exposing the pagination state needed by feed UIs.
-
-Example:
-
-```tsx
-import { useInfiniteQuery } from './src/hooks'
-
-async function fetchPage(cursor: string | null) {
-  const response = await fetch(`/api/feed?cursor=${cursor ?? ''}`)
-  return response.json()
-}
-
-function Feed() {
-  const { data, status, hasNextPage, fetchNextPage } = useInfiniteQuery({
-    queryKey: 'feed',
-    fetchPage,
-  })
-
-  return (
-    <div>
-      {status === 'loading' && <p>Loading feed…</p>}
-      {data.map((item) => (
-        <div key={item.id}>{item.title}</div>
-      ))}
-      {hasNextPage && <button onClick={() => void fetchNextPage()}>Load more</button>}
-    </div>
-  )
-}
-```
-
-> > > > > > > Stashed changes
 
 ## Project layout
 
-- `src/components/` — Layout, shared UI (including `SmartBackButton` and the in-app Changelog drawer sourced from `/changelog.json`); see the [shared components catalog](docs/COMPONENTS.md) for props, Storybook stories, accessibility notes, styling ownership, and token usage
+- `src/pages/` — Home, Bond, Trust Score
+- `src/components/` — Layout, shared UI (including the in-app Changelog drawer sourced from `/changelog.json`); see the [shared components catalog](docs/COMPONENTS.md) for props, Storybook stories, accessibility notes, styling ownership, and token usage
+- `src/hooks/useDebouncedAutoSave.ts` — Generic debounced save lifecycle (`pending` / `saving` / `saved` / `error`)
+- `src/components/indicators/` — Status indicators (`AutoSaveIndicator`)
+- `src/config/autoSave.ts` — Central auto-save constants
 - `src/widgetCache/` — Shared widget cache (`WidgetCacheProvider`, `useWidgetCache`)
 - `src/components/widget/` — Per-widget UI primitives (`WidgetRefreshButton`)
 - `src/config/widgetCache.ts` — Central widget-cache constants

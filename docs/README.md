@@ -93,12 +93,12 @@ This directory contains comprehensive design specifications and implementation g
     - Review checklist and component examples
     - Guidance for replacing loose props with safer, documented interfaces
 
-13. **[Mobile Navigation Pattern](./mobile-navigation-pattern.md)** ⭐ NEW
-    - Hybrid responsive navigation (hamburger mobile + horizontal desktop)
-    - Complete implementation guide with code examples
-    - Accessibility requirements (WCAG 2.1 AA)
-    - Testing guide and troubleshooting
-    - [Decision Matrix](./mobile-navigation-DECISION.md) | [Reconnaissance Report](./mobile-nav-RECON.md) | [Figma Rules](./figma-nav-rules.md)
+7. **[Mobile Navigation Pattern](./mobile-navigation-pattern.md)** ⭐ NEW
+   - Hybrid responsive navigation (hamburger mobile + horizontal desktop)
+   - Complete implementation guide with code examples
+   - Accessibility requirements (WCAG 2.1 AA)
+   - Testing guide and troubleshooting
+   - [Decision Matrix](./mobile-navigation-DECISION.md) | [Reconnaissance Report](./mobile-nav-RECON.md) | [Figma Rules](./figma-nav-rules.md)
 
 14. [Keyboard Interactions Contract](./keyboard-interactions.md) ⭐ NEW
     - Developer-facing matrix of every interactive component and its expected keyboard behavior
@@ -109,6 +109,11 @@ This directory contains comprehensive design specifications and implementation g
     - `useWallet` API documentation
     - Connection state machine and UX contract for connection/network states
     - Usage guide and network mismatch handling
+
+**[Settings Auto-Save Indicator](./auto-save.md)** ⭐ NEW (closes #564)
+- Debounced `PATCH /settings` flow with `useDebouncedAutoSave` hook.
+- `<AutoSaveIndicator />` token-driven pill showing `Saving…` / `Saved just now` / "Couldn't save" with retry.
+- In-flight cancellation via `AbortController` so stale PATCHes can't overwrite newer state.
 
 16. **[Widget Cache & Per-Widget Refresh](./widget-cache.md)** ⭐ NEW (closes #561)
     - Shared in-app cache for dashboard widgets so a refresh button on one card only invalidates that card's key — others keep their state.
