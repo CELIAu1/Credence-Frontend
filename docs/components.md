@@ -36,6 +36,7 @@ Related focused docs: [button system](./button-system.md), [notifications](./not
 | AttestationForm        | Delegates to `AddressInput`, `Select`, `FormField`, `Button`                        | No dedicated CSS file; inherits from composing components.                                                                |
 | CreateBondFlow         | `src/components/CreateBondFlow.css`                                                 | None.                                                                                                                     |
 | ErrorBoundary          | Delegates to `states/ErrorState`                                                    | No dedicated CSS file.                                                                                                    |
+| SmartBackButton        | `src/components/navigation/SmartBackButton.css`                                     | None.                                                                                                                     |
 
 ## Shared vocabularies
 
@@ -550,3 +551,30 @@ Tokens: `--credence-color-primary` (fill), `--credence-color-slate-200` (track b
 {/* Indeterminate */}
 <Progress aria-label="Loading trust score" />
 ```
+
+## SmartBackButton
+
+Source: [`src/components/navigation/SmartBackButton.tsx`](../src/components/navigation/SmartBackButton.tsx). Hook: [`src/hooks/useSmartBack.ts`](../src/hooks/useSmartBack.ts).
+
+Navigation button component that uses smart-back navigation. Honours prior-route history when present and falls back to `/dashboard` (or custom fallback) when no prior history exists.
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `label` | `string` | `'Go Back'` | Visible button text |
+| `fallback` | `string` | `'/dashboard'` | Fallback route when history is missing |
+| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'danger'` | `'secondary'` | Button visual style variant |
+| `className` | `string` | `''` | Custom CSS class overrides |
+| `ariaLabel` | `string` | `undefined` | Accessible ARIA label override |
+
+Accessibility: renders native `<button>` element with arrow icon hidden from screen readers (`aria-hidden="true"`). Accessible label defaults to `label` text.
+
+Tokens: `--credence-space-2`, `--credence-space-3`, `--credence-font-family-base`, `--credence-font-weight-semibold`, `--credence-motion-duration-fast`, `--credence-motion-easing-standard`.
+
+```tsx
+{/* Standard smart-back button with default /dashboard fallback */}
+<SmartBackButton />
+
+{/* Custom label and fallback route */}
+<SmartBackButton label="Back to Settings" fallback="/settings" variant="ghost" />
+```
+
