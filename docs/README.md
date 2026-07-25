@@ -100,13 +100,10 @@ This directory contains comprehensive design specifications and implementation g
     - Testing guide and troubleshooting
     - [Decision Matrix](./mobile-navigation-DECISION.md) | [Reconnaissance Report](./mobile-nav-RECON.md) | [Figma Rules](./figma-nav-rules.md)
 
-> > > > > > > Stashed changes
-
 14. [Keyboard Interactions Contract](./keyboard-interactions.md) ⭐ NEW
-
-- Developer-facing matrix of every interactive component and its expected keyboard behavior
-- Covers `ConfirmDialog`, `TierLadder`, `Banner`, `Toggle`, `AddressInput`, skip-link, and navigation
-- Focus-restore contract and checklist for new interactive components
+    - Developer-facing matrix of every interactive component and its expected keyboard behavior
+    - Covers `ConfirmDialog`, `TierLadder`, `Banner`, `Toggle`, `AddressInput`, skip-link, and navigation
+    - Focus-restore contract and checklist for new interactive components
 
 15. [Wallet Integration](./WALLET_INTEGRATION.md) ⭐ NEW
     - `useWallet` API documentation
@@ -118,7 +115,11 @@ This directory contains comprehensive design specifications and implementation g
     - `useWidgetCache` hook + `<WidgetRefreshButton />` + token-driven styling.
     - Coverage includes mount, key isolation, error surfacing, and reduced-motion.
 
-17. **[Telemetry & Analytics](./telemetry.md)**
+17. **[API Client Policies](./API_CLIENT_POLICIES.md)** ⭐ NEW
+    - Interceptors, retry policy, and error taxonomy for the API client
+    - `ApiError` structure and usage examples
+
+18. **[Telemetry & Analytics](./telemetry.md)**
     - Privacy-first approach (no telemetry collected)
     - No PII handling or third-party analytics
 
